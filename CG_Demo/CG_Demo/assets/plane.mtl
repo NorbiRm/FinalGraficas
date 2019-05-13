@@ -1,0 +1,6 @@
+newmtl plane
+
+Ka 0.1 0.1 0.1
+kd 1 1 1
+ks 1 1 1
+map_Kd legorreta.tga
