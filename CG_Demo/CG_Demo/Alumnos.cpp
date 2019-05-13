@@ -2,13 +2,16 @@
 
 Alumnos::Alumnos()
 {
+	contPedestrian = 0;
 	srand(time(0));
 
 	bezieres = new Bezier*[4];
+	pedestrians = new Pedestrian*[ALUMNOS];
 
 	generateBeziers();
 	nRuta = 0;
-	for(int i = 0; i < contPedestrian; i++) {
+	contPedestrian++;
+	for(int i = 0; i <(contPedestrian); i++) {
 		nRuta = rand() % 4;
 		printf("%d", nRuta);
 		Point tempPoint = new Point(bezieres[nRuta]->ctrlPoints[0]);
@@ -30,7 +33,13 @@ void Alumnos::update() {
 
 void Alumnos::draw() {
 	for (int i = 0; i < contPedestrian; i++) {
-		pedestrians[i]->draw();
+		//pedestrians[i]->draw();
+		for (int f = 0; f < contPedestrian; f++) {
+			pedestrians[i]->draw();
+			if (f != i) {
+				pedestrians[i]->collide(pedestrians[f]);
+			}
+		}
 	}
 }
 

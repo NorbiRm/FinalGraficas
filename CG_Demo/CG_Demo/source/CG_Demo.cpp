@@ -66,7 +66,7 @@ void display()							// Called for each frame (about 60 times per second).
 	plano->draw();
 
 	// Draw Pedestrians
-	//pedestrians->draw();
+	pedestrians->draw();
 
 
 	glutSwapBuffers();												// Swap the hidden and visible buffers.

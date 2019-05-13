@@ -25,6 +25,7 @@
 #include "Point.h"
 #include <ctime>
 #include <cstdlib>
+#include <stdio.h>
 
 #define CTRL_POINTS 10			//Aqui cambiamos el numero de puntos
 #define TRAVELERS 100
@@ -48,17 +49,21 @@ public:
 	GLfloat *Ip;
 
 	Bezier* miBezier;
+	Bezier** rutas;
+
+	int rutaActual;
+
 
 	float t, dt;
 	float dir;
-
 	float x, y, z, a;
 	float leftArmPos, rArmPos;
+
 	bool stop;
 
 	Point** points;
 
-	//void collide(Pedestrian *p);
+	void collide(Pedestrian *p);
 	void draw();
 	void setBezier(Bezier* _bezier);
 	void update();

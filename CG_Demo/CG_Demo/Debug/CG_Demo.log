@@ -1,3 +1,3 @@
-﻿  Alumnos.cpp
-d:\documents\itesm\8vo\finalgraficas\cg_demo\cg_demo\alumnos.cpp(5): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+﻿  CG_Demo.cpp
+d:\documents\itesm\8vo\finalgraficas\cg_demo\cg_demo\source\cg_demo.cpp(102): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
   CG_Demo.vcxproj -> D:\Documents\ITESM\8vo\FinalGraficas\CG_Demo\Debug\CG_Demo.exe

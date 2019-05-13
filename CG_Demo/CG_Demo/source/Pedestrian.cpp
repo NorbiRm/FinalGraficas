@@ -17,27 +17,31 @@ Pedestrian::Pedestrian(Point p, Bezier** beziers, int bezierActual)
 	a = p.a;
 	leftArmPos = rArmPos = 0.0;
 
-	//Begin Bezier
 	dir = 1;
 	t = 0.0001;
 	dt = 0.0001;
 
-	miBezier = beziers[bezierActual];
+	rutaActual = bezierActual;
+	rutas = beziers;
+	miBezier = beziers[rutaActual];
 
 }
 Pedestrian::~Pedestrian()
 {
 }
 
-/*void Pedestrian::collide(Pedestrian *p) {
+void Pedestrian::collide(Pedestrian *p) {
 	if (sqrt((x - p->x)*(x - p->x) + (z - p->z)*(z - p->z)) <= 2) {
-		stop = true;
-	}
-	else {
-		stop = false;
+		if (rutaActual == 3) {
+			rutaActual = 0;
+		}
+		else {
+			rutaActual++;
+		}
+		miBezier = rutas[rutaActual];
 	}
 
-}*/
+}
 void Pedestrian::update() {
 	leftArmPos += 0.001f * dir;
 	rArmPos -= 0.001f * dir;
@@ -57,6 +61,7 @@ void Pedestrian::update() {
 }
 
 void Pedestrian::draw() {
+	printf("el bezier dice t= %f \n", t);
 
 	if (stop == false) {
 		Point pt = miBezier->evaluate(t);
@@ -80,6 +85,7 @@ void Pedestrian::draw() {
 	//Draw body
 	glPushMatrix();
 	{
+		setColor();
 		//glColor3f(1, 0, 0);//X        
 		glTranslatef(x, y, z);
 		glutSolidSphere(1, 10, 10);
@@ -101,7 +107,6 @@ void Pedestrian::draw() {
 
 		}
 		glPopMatrix();
-		setColor();
 
 	}
 	glPopMatrix();
