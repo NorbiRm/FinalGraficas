@@ -38,6 +38,7 @@
 #include "Plane.h"
 #include "Pedestrian.h"
 #include "Camera.h"
+#include "Alumnos.h"
 
 #include <iostream>
 
@@ -52,28 +53,7 @@ GLfloat* global_ambient;
 
 Camera* camaraPrincipal;
 Plane* plano;
-
-
-
-void axes() {
-	glLineWidth(5.0f);
-	glBegin(GL_LINES);
-	{
-		glColor3f(1, 0, 0);
-		glVertex3f(0, 0, 0);
-		glVertex3f(1, 0, 0);
-
-		glColor3f(0, 1, 0);
-		glVertex3f(0, 0, 0);
-		glVertex3f(0, 1, 0);
-
-		glColor3f(0, 0, 1);
-		glVertex3f(0, 0, 0);
-		glVertex3f(0, 0, 1);
-
-	}
-	glEnd();
-}
+Alumnos* pedestrians;
 
 void display()							// Called for each frame (about 60 times per second).
 {
@@ -85,7 +65,8 @@ void display()							// Called for each frame (about 60 times per second).
 	// Set Plane and buildings
 	plano->draw();
 
-	
+	// Draw Pedestrians
+	//pedestrians->draw();
 
 
 	glutSwapBuffers();												// Swap the hidden and visible buffers.
@@ -96,6 +77,8 @@ void display()							// Called for each frame (about 60 times per second).
 void idle()															// Called when drawing is finished.
 {
 	camaraPrincipal->update();
+
+	//pedestrians->update();
 
 	glutPostRedisplay();											// Display again.
 }
@@ -116,9 +99,11 @@ void reshape(int x, int y)											// Called when the window geometry changes.
 
 void init() // FOR GLUT LOOP
 {
-	srand(time(NULL));
+	srand(time(0));
+
 	camaraPrincipal = new Camera();
 	plano = new Plane();
+	pedestrians = new Alumnos();
 
 	global_ambient = new GLfloat[4];
 	global_ambient[0] = 0.3f;
@@ -152,4 +137,24 @@ int main(int argc, char* argv[])
 	glutIdleFunc(idle);												// Idle CALLBACK function.
 	glutMainLoop();													// Begin graphics program.
 	return 0;														// ANSI C requires a return value.
+}
+
+void axes() {
+	glLineWidth(5.0f);
+	glBegin(GL_LINES);
+	{
+		glColor3f(1, 0, 0);
+		glVertex3f(0, 0, 0);
+		glVertex3f(1, 0, 0);
+
+		glColor3f(0, 1, 0);
+		glVertex3f(0, 0, 0);
+		glVertex3f(0, 1, 0);
+
+		glColor3f(0, 0, 1);
+		glVertex3f(0, 0, 0);
+		glVertex3f(0, 0, 1);
+
+	}
+	glEnd();
 }

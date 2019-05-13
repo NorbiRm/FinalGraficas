@@ -34,7 +34,7 @@ class Pedestrian
 public:
 	Pedestrian(float _x, float _y, float _z, float _a);
 	Pedestrian(Point* p, Point*_begin, Point*_finish, float _numPoints);
-	Pedestrian(Point* p, Bezier** beziers, int bezierActual);
+	Pedestrian(Point p, Bezier** beziers, int bezierActual);
 	~Pedestrian();
 	void setColor();
 	GLfloat *ka0;

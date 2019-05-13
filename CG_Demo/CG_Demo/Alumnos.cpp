@@ -4,11 +4,15 @@ Alumnos::Alumnos()
 {
 	srand(time(0));
 
+	bezieres = new Bezier*[4];
+
 	generateBeziers();
 	nRuta = 0;
 	for(int i = 0; i < contPedestrian; i++) {
 		nRuta = rand() % 4;
-		pedestrians[i] = new Pedestrian(bezieres[nRuta]->ctrlPoints[0],bezieres,nRuta);
+		printf("%d", nRuta);
+		Point tempPoint = new Point(bezieres[nRuta]->ctrlPoints[0]);
+		pedestrians[i] = new Pedestrian(tempPoint,bezieres,nRuta);
 	}
 }
 
@@ -16,8 +20,11 @@ Alumnos::~Alumnos(){}
 
 void Alumnos::update() {
 	waitFrames++;
-	if (waitFrames >= 120 && (contPedestrian+1) < ALUMNOS) {
+	if (waitFrames%120==0 && (contPedestrian+1) < ALUMNOS) {
 		contPedestrian++;
+	}
+	for (int i = 0; i < contPedestrian; i++) {
+		pedestrians[i]->update();
 	}
 }
 
@@ -28,73 +35,110 @@ void Alumnos::draw() {
 }
 
 void Alumnos::generateBeziers() {
-	bezieres = new Bezier*[4];
-	
+	Point** ctrlPoints = new Point*[10];
+
+	for (int i = 0; i < 10; i++) {
+		ctrlPoints[i] = new Point(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	}
 	for (int i = 0; i < 4; i++)
 	{
-		ctrlPoints[0] = new Point(0, 0, 0, 0, 0, 0, 0);
-		ctrlPoints[1] = new Point(0, 0, 0, 0, 0, 0, 0);
-		ctrlPoints[2] = new Point(0, 0, 0, 0, 0, 0, 0);
-		ctrlPoints[3] = new Point(0, 0, 0, 0, 0, 0, 0);
-		ctrlPoints[4] = new Point(0, 0, 0, 0, 0, 0, 0);
-		ctrlPoints[5] = new Point(0, 0, 0, 0, 0, 0, 0);
-		ctrlPoints[6] = new Point(0, 0, 0, 0, 0, 0, 0);
-		ctrlPoints[7] = new Point(0, 0, 0, 0, 0, 0, 0);
-		ctrlPoints[8] = new Point(0, 0, 0, 0, 0, 0, 0);
-		ctrlPoints[9] = new Point(0, 0, 0, 0, 0, 0, 0);
-
+		printf("%.3f", ctrlPoints[0]->x);
 		switch (i)
 		{
 		case 0:
+			ctrlPoints[0]->x = 0.0;
+			ctrlPoints[0]->z = 0.0;
+			ctrlPoints[1]->x = 0.0;
+			ctrlPoints[1]->z = 0.0;
+			ctrlPoints[2]->x = 0.0;
+			ctrlPoints[2]->z = 0.0;
+			ctrlPoints[3]->x = 0.0;
+			ctrlPoints[3]->z = 0.0;
+			ctrlPoints[4]->x = 0.0;
+			ctrlPoints[4]->z = 0.0;
+			ctrlPoints[5]->x = 0.0;
+			ctrlPoints[5]->z = 0.0;
+			ctrlPoints[6]->x = 0.0;
+			ctrlPoints[6]->z = 0.0;
+			ctrlPoints[7]->x = 0.0;
+			ctrlPoints[7]->z = 0.0;
+			ctrlPoints[8]->x = 0.0;
+			ctrlPoints[8]->z = 0.0;
+			ctrlPoints[9]->x = 0.0;
+			ctrlPoints[9]->z = 0.0;
+			break;
 		case 1:
-			ctrlPoints[0]->x = 0;
-			ctrlPoints[0]->z = 0;
-			ctrlPoints[1]->x = 0;
-			ctrlPoints[1]->z = 0;
-			ctrlPoints[2]->x = 0;
-			ctrlPoints[2]->z = 0;
-			ctrlPoints[3]->x = 0;
-			ctrlPoints[3]->z = 0;
-			ctrlPoints[4]->x = 0;
-			ctrlPoints[4]->z = 0;
-			ctrlPoints[5]->x = 0;
-			ctrlPoints[5]->z = 0;
-			ctrlPoints[6]->x = 0;
-			ctrlPoints[6]->z = 0;
-			ctrlPoints[7]->x = 0;
-			ctrlPoints[7]->z = 0;
-			ctrlPoints[8]->x = 0;
-			ctrlPoints[8]->z = 0;
-			ctrlPoints[9]->x = 0;
-			ctrlPoints[9]->z = 0;
-
+			ctrlPoints[0]->x = 0.0;
+			ctrlPoints[0]->z = 0.0;
+			ctrlPoints[1]->x = 0.0;
+			ctrlPoints[1]->z = 0.0;
+			ctrlPoints[2]->x = 0.0;
+			ctrlPoints[2]->z = 0.0;
+			ctrlPoints[3]->x = 0.0;
+			ctrlPoints[3]->z = 0.0;
+			ctrlPoints[4]->x = 0.0;
+			ctrlPoints[4]->z = 0.0;
+			ctrlPoints[5]->x = 0.0;
+			ctrlPoints[5]->z = 0.0;
+			ctrlPoints[6]->x = 0.0;
+			ctrlPoints[6]->z = 0.0;
+			ctrlPoints[7]->x = 0.0;
+			ctrlPoints[7]->z = 0.0;
+			ctrlPoints[8]->x = 0.0;
+			ctrlPoints[8]->z = 0.0;
+			ctrlPoints[9]->x = 0.0;
+			ctrlPoints[9]->z = 0.0;
 			break;
 		case 2:
+			ctrlPoints[0]->x = 0.0;
+			ctrlPoints[0]->z = 0.0;
+			ctrlPoints[1]->x = 0.0;
+			ctrlPoints[1]->z = 0.0;
+			ctrlPoints[2]->x = 0.0;
+			ctrlPoints[2]->z = 0.0;
+			ctrlPoints[3]->x = 0.0;
+			ctrlPoints[3]->z = 0.0;
+			ctrlPoints[4]->x = 0.0;
+			ctrlPoints[4]->z = 0.0;
+			ctrlPoints[5]->x = 0.0;
+			ctrlPoints[5]->z = 0.0;
+			ctrlPoints[6]->x = 0.0;
+			ctrlPoints[6]->z = 0.0;
+			ctrlPoints[7]->x = 0.0;
+			ctrlPoints[7]->z = 0.0;
+			ctrlPoints[8]->x = 0.0;
+			ctrlPoints[8]->z = 0.0;
+			ctrlPoints[9]->x = 0.0;
+			ctrlPoints[9]->z = 0.0;
+			break;
 		case 3:
-			ctrlPoints[0]->x = 0;
-			ctrlPoints[0]->z = 0;
-			ctrlPoints[1]->x = 0;
-			ctrlPoints[1]->z = 0;
-			ctrlPoints[2]->x = 0;
-			ctrlPoints[2]->z = 0;
-			ctrlPoints[3]->x = 0;
-			ctrlPoints[3]->z = 0;
-			ctrlPoints[4]->x = 0;
-			ctrlPoints[4]->z = 0;
-			ctrlPoints[5]->x = 0;
-			ctrlPoints[5]->z = 0;
-			ctrlPoints[6]->x = 0;
-			ctrlPoints[6]->z = 0;
-			ctrlPoints[7]->x = 0;
-			ctrlPoints[7]->z = 0;
-			ctrlPoints[8]->x = 0;
-			ctrlPoints[8]->z = 0;
-			ctrlPoints[9]->x = 0;
-			ctrlPoints[9]->z = 0;
+			ctrlPoints[0]->x = 0.0;
+			ctrlPoints[0]->z = 0.0;
+			ctrlPoints[1]->x = 0.0;
+			ctrlPoints[1]->z = 0.0;
+			ctrlPoints[2]->x = 0.0;
+			ctrlPoints[2]->z = 0.0;
+			ctrlPoints[3]->x = 0.0;
+			ctrlPoints[3]->z = 0.0;
+			ctrlPoints[4]->x = 0.0;
+			ctrlPoints[4]->z = 0.0;
+			ctrlPoints[5]->x = 0.0;
+			ctrlPoints[5]->z = 0.0;
+			ctrlPoints[6]->x = 0.0;
+			ctrlPoints[6]->z = 0.0;
+			ctrlPoints[7]->x = 0.0;
+			ctrlPoints[7]->z = 0.0;
+			ctrlPoints[8]->x = 0.0;
+			ctrlPoints[8]->z = 0.0;
+			ctrlPoints[9]->x = 0.0;
+			ctrlPoints[9]->z = 0.0;
 			break;
 		default:
 			break;
 		}
-		bezieres[i] = new Bezier(10, ctrlPoints);
+		Point** ctrlPointsAux = ctrlPoints;
+		printf("va a echarse el bezier");
+		bezieres[i] = new Bezier(9, ctrlPointsAux);
 	}
+	printf("salio for");
 }

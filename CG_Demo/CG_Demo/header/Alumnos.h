@@ -1,8 +1,9 @@
 #pragma once
 #include "Pedestrian.h"
 #include "Bezier.h"
+#include <stdio.h>
 
-#define ALUMNOS 100
+#define ALUMNOS 5
 
 class Alumnos
 {
@@ -16,7 +17,6 @@ public:
 	~Alumnos();
 
 	int nRuta;
-	Point** ctrlPoints;
 	int waitFrames;
 	int contPedestrian;
 

@@ -9,12 +9,12 @@ Pedestrian::Pedestrian(float _x, float _y, float _z, float _a)
 	leftArmPos = rArmPos = 0.0;
 }
 
-Pedestrian::Pedestrian(Point* p, Bezier** beziers, int bezierActual)
+Pedestrian::Pedestrian(Point p, Bezier** beziers, int bezierActual)
 {
 	stop = false;
 
-	x = p->x; y = p->y; z = p->z;
-	a = p->a;
+	x = p.x; y = p.y; z = p.z;
+	a = p.a;
 	leftArmPos = rArmPos = 0.0;
 
 	//Begin Bezier
@@ -77,12 +77,6 @@ void Pedestrian::draw() {
 		dir *= -1;
 	}*/
 
-	/*
-	for (int i = 0; i <= numPoints + 1; i++) {
-		points[i]->draw();
-	}
-	*/
-
 	//Draw body
 	glPushMatrix();
 	{
@@ -107,6 +101,7 @@ void Pedestrian::draw() {
 
 		}
 		glPopMatrix();
+		setColor();
 
 	}
 	glPopMatrix();
