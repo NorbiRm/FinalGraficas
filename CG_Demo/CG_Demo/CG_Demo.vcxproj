@@ -156,6 +156,7 @@
     <ClInclude Include="header\Plane.h" />
     <ClInclude Include="header\Point.h" />
     <ClInclude Include="header\Ruta.h" />
+    <ClInclude Include="header\SuperPersona.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Alumnos.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="source\Plane.cpp" />
     <ClCompile Include="source\Point.cpp" />
     <ClCompile Include="source\Ruta.cpp" />
+    <ClCompile Include="SuperPersona.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

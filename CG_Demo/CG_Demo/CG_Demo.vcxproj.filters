@@ -45,6 +45,9 @@
     <ClInclude Include="header\Alumnos.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\SuperPersona.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Bezier.cpp">
@@ -78,6 +81,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Alumnos.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SuperPersona.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

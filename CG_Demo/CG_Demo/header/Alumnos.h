@@ -1,15 +1,17 @@
 #pragma once
 #include "Pedestrian.h"
+#include "SuperPersona.h"
 #include "Bezier.h"
 #include <stdio.h>
 
-#define ALUMNOS 2
+#define ALUMNOS 100
 
 class Alumnos
 {
 public:
-	Alumnos();
+	Alumnos(SuperPersona *_jugador);
 	Pedestrian** pedestrians;
+	SuperPersona *jugador;
 	void draw();
 	void generateBeziers();
 	void update();

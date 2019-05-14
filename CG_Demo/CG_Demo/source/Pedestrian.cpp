@@ -1,6 +1,8 @@
 #include "Pedestrian.h"
-#include "Bezier.h"
+#include "glm.h"
 
+
+GLMmodel* sintel;
 
 Pedestrian::Pedestrian(float _x, float _y, float _z, float _a)
 {
@@ -11,19 +13,29 @@ Pedestrian::Pedestrian(float _x, float _y, float _z, float _a)
 
 Pedestrian::Pedestrian(Point p, Bezier** beziers, int bezierActual)
 {
-	stop = false;
+	choco = false;
 
 	x = p.x; y = p.y; z = p.z;
 	a = p.a;
 	leftArmPos = rArmPos = 0.0;
-
-	dir = 1;
+	dims = new float[3];
+	dir = 1.0;
+	dirArm = 1.0;
 	t = 0.0001;
-	dt = 0.0001;
+	dt = 0.001;
 
 	rutaActual = bezierActual;
 	rutas = beziers;
 	miBezier = beziers[rutaActual];
+
+	sintel = glmReadOBJ("assets/Persona/Persona.obj");
+	glmUnitize(sintel);
+	glmFacetNormals(sintel);
+	glmDimensions(sintel, dims);
+	center = new float[3];
+	center[0] = x + dims[0] / 2.0f;
+	center[1] = y + dims[1] / 2.0f;
+	center[2] = z + dims[2] / 2.0f;
 
 }
 Pedestrian::~Pedestrian()
@@ -31,23 +43,51 @@ Pedestrian::~Pedestrian()
 }
 
 void Pedestrian::collide(Pedestrian *p) {
-	if (sqrt((x - p->x)*(x - p->x) + (z - p->z)*(z - p->z)) <= 2) {
+
+	if (sqrt(abs(x - p->x)*abs(x - p->x) + abs(z - p->z)*abs(z - p->z)) <= 1) {
 		if (rutaActual == 3) {
 			rutaActual = 0;
 		}
 		else {
 			rutaActual++;
 		}
-		miBezier = rutas[rutaActual];
+		Point** ctrlPointsTempBezier = new Point*[2];
+		ctrlPointsTempBezier[0] = new Point(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+		ctrlPointsTempBezier[1] = new Point(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+
+		//Aqui estoy afectandome a mi si choco
+		ctrlPointsTempBezier[0]->x = x;
+		ctrlPointsTempBezier[0]->z = z;
+		ctrlPointsTempBezier[1]->x = rutas[rutaActual]->ctrlPoints[0]->x;
+		ctrlPointsTempBezier[1]->z = rutas[rutaActual]->ctrlPoints[0]->z;
+		t = .0001;
+		dir *= -1;
+		choco = true;
+		
+		Bezier* tempBezier = new Bezier(1, ctrlPointsTempBezier);
+		miBezier = tempBezier;
+
+		/*afectando al otro
+		ctrlPointsTempBezier[0]->x = p->x;
+		ctrlPointsTempBezier[0]->z = p->z;
+		ctrlPointsTempBezier[1]->x = rutas[p->rutaActual]->ctrlPoints[0]->x;
+		ctrlPointsTempBezier[1]->z = rutas[p->rutaActual]->ctrlPoints[0]->z;
+		p->t = .0001;
+		p->dir *= -1;
+		p->choco = true;
+		p->setBezier(tempBezier)
+		*/
+		
 	}
 
 }
+
 void Pedestrian::update() {
-	leftArmPos += 0.001f * dir;
-	rArmPos -= 0.001f * dir;
+	leftArmPos += 0.001f * dirArm;
+	rArmPos -= 0.001f * dirArm;
 
 	if (leftArmPos > 0.3f || leftArmPos < -0.3f) {
-		dir = -dir;
+		dirArm = -dirArm;
 	}
 
 	if (t >= 1) {
@@ -61,9 +101,18 @@ void Pedestrian::update() {
 }
 
 void Pedestrian::draw() {
-	printf("el bezier dice t= %f \n", t);
-
-	if (stop == false) {
+	Point pt = miBezier->evaluate(t);
+	x = pt.x;
+	y = pt.y;
+	z = pt.z;
+	t += dt * dir;
+	
+	if (choco==true && abs(x-rutas[rutaActual]->ctrlPoints[0]->x)<=1 && abs(z-rutas[rutaActual]->ctrlPoints[0]->z)<=1) {
+		t = 0.001;
+		choco = false;
+		miBezier = rutas[rutaActual];
+	}
+	/*if (choco == false) {
 		Point pt = miBezier->evaluate(t);
 		x = pt.x;
 		y = pt.y;
@@ -71,73 +120,47 @@ void Pedestrian::draw() {
 		t += dt * dir;
 	}
 	else {
-		stop = false;
-	}
-	/*if (t >= 1) {
-		t = 0.999;
-		dir *= -1;
-	}
-	if (t <= 0) {
-		t = 0.001;
-		dir *= -1;
+		if (x == miBezier->ctrlPoints[0]->x && z == miBezier->ctrlPoints[0]->z) {
+			choco = false;
+			t = 0.001;
+			dir *= -1;
+		}
+		
 	}*/
 
 	//Draw body
 	glPushMatrix();
 	{
-		setColor();
-		//glColor3f(1, 0, 0);//X        
+		glScalef(1, 1, 1); 
 		glTranslatef(x, y, z);
-		glutSolidSphere(1, 10, 10);
-		glPushMatrix();
+		glRotated(180.0, 1, 0, 0);
+		glmDraw(sintel, GLM_SMOOTH | GLM_TEXTURE);
+		/*glPushMatrix();
 		{
+			glScalef(0.5, 0.5, 0.5);
 			glTranslatef(1, rArmPos, 0);
-			glutSolidSphere(0.5, 10, 10);
-			glTranslatef(0.5, rArmPos, 0);
-			glutSolidSphere(0.25, 10, 10);
+			glmDraw(sintel, GLM_SMOOTH | GLM_TEXTURE);
+			glTranslatef(1.5, rArmPos, 0);
+			glmDraw(sintel, GLM_SMOOTH | GLM_TEXTURE);
 
 		}
 		glPopMatrix();
 		glPushMatrix();
 		{
+			glScalef(0.5, 0.5, 0.5);
 			glTranslatef(1, leftArmPos, z);
-			glutSolidSphere(0.5, 10, 10);
+			glmDraw(sintel, GLM_SMOOTH | GLM_TEXTURE);
 			glTranslatef(-0.5, leftArmPos, 0);
-			glutSolidSphere(0.25, 10, 10);
+			glmDraw(sintel, GLM_SMOOTH | GLM_TEXTURE);
 
 		}
 		glPopMatrix();
 
-	}
+	*/}
 	glPopMatrix();
 
 }
 
-void Pedestrian::setColor() {
-	ka0 = new GLfloat[4];
-	ka0[0] = .25f;
-	ka0[1] = .15f;
-	ka0[2] = .98f;
-	ka0[3] = 1.0f;
-	kd0 = new GLfloat[4];
-	kd0[0] = .95f;
-	kd0[1] = .15f;
-	kd0[2] = .08f;
-	kd0[3] = 1.0f;
-
-	ks0 = new GLfloat[4];
-	ks0[0] = .25f;
-	ks0[1] = .15f;
-	ks0[2] = .98f;
-	ks0[3] = 1.0f;
-	alpha0 = new GLfloat[1];
-	alpha0[0] = 75.0f;
-
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ka0);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, kd0);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, ks0);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_POSITION, alpha0);
-}
 void Pedestrian::setBezier(Bezier* _bezier) {
 	miBezier = _bezier;
 }

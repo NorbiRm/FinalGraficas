@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-Camera::Camera()
+Camera::Camera(float _s)
 {
 	pos = new float[3];
 	pos[0] = 0;
@@ -8,28 +8,49 @@ Camera::Camera()
 	pos[2] = 1;
 
 	speed = 0.008f;
-}
-
-Camera::Camera(float _s)
-{
-	pos = new float[3];
-	pos[0] = 0;
-	pos[1] = 0;
-	pos[2] = 2;
-
 	dir = new float[3];
 	dir[0] = 0;
-	dir[1] = 0;
+	dir[1] = 1;
+	dir[2] = 1;
+
+	fov = 45;
+	nearDist = 0.2;
+	farDist = 300.0;
+}
+
+Camera::Camera()
+{
+	pos = new float[3];
+	pos[0] = -30;
+	pos[1] = 30;
+	pos[2] = 20;
+
+	speed = 0.008f;
+	dir = new float[3];
+	dir[0] = 0;
+	dir[1] = 1;
 	dir[2] = 0;
 
-	speed = _s;
+	fov = 45;
+	nearDist = 0.2;
+	farDist = 300.0;
+
+	//speed = _s;
 }
 
 void Camera::setView() {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	int viewportCoords[4];
+	glGetIntegerv(GL_VIEWPORT, viewportCoords);
+	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+	
+
+	gluPerspective(fov, (GLfloat)viewportCoords[2] / (GLfloat)viewportCoords[3], nearDist, farDist);
+
 	gluLookAt(
 		pos[0], pos[1], pos[2],	
-		0, 0, 0,
+		0,0,0,
 		0, 1, 0
 	);
 }

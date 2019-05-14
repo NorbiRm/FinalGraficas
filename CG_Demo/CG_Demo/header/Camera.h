@@ -38,6 +38,9 @@ public:
 	float speed;
 	float* pos;
 	float* dir;
+	float nearDist;
+	float farDist;
+	float fov;
 
 	void setView();
 	void move(int key, float* ppos);

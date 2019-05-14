@@ -34,11 +34,11 @@
 #include <math.h>
 #include "Bezier.h"
 #include "Point.h"
-#include "Ruta.h"
 #include "Plane.h"
 #include "Pedestrian.h"
 #include "Camera.h"
 #include "Alumnos.h"
+#include "SuperPersona.h"
 
 #include <iostream>
 
@@ -54,11 +54,12 @@ GLfloat* global_ambient;
 Camera* camaraPrincipal;
 Plane* plano;
 Alumnos* pedestrians;
+SuperPersona* jugador;
 
 void display()							// Called for each frame (about 60 times per second).
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);				// Clear color and depth buffers.
-
+	glLoadIdentity();
 	//Set the camera
 	camaraPrincipal->setView();
 
@@ -68,17 +69,21 @@ void display()							// Called for each frame (about 60 times per second).
 	// Draw Pedestrians
 	pedestrians->draw();
 
+	// drawPoints();
 
 	glutSwapBuffers();												// Swap the hidden and visible buffers.
 
 }
 
+void movePlayer(unsigned char key, int x, int y) {
+	pedestrians->jugador->move(key);
+}
 
 void idle()															// Called when drawing is finished.
 {
 	camaraPrincipal->update();
 
-	//pedestrians->update();
+	pedestrians->update();	
 
 	glutPostRedisplay();											// Display again.
 }
@@ -103,12 +108,26 @@ void init() // FOR GLUT LOOP
 
 	camaraPrincipal = new Camera();
 	plano = new Plane();
-	pedestrians = new Alumnos();
+	jugador = new SuperPersona();
+	pedestrians = new Alumnos(jugador);
+	
+	//Fuentes de luz
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
+	GLfloat diffusel0[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat ambientl0[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat specularl0[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat position[4] = { 0.0f, -10.0f, 1.0f, 0.0f };
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientl0);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffusel0);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specularl0);
+	glLightfv(GL_LIGHT0, GL_POSITION, position);
 
 	global_ambient = new GLfloat[4];
-	global_ambient[0] = 0.3f;
-	global_ambient[1] = 0.3f;
-	global_ambient[2] = 0.3f;
+	global_ambient[0] = 1.0f;
+	global_ambient[1] = 1.0f;
+	global_ambient[2] = 1.0f;
 	global_ambient[3] = 1.0f;
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
 	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
@@ -120,7 +139,6 @@ void init() // FOR GLUT LOOP
 	glClearColor(0.0, 0.0, 0.0, 0.0);	// Clear the color state.
 	glMatrixMode(GL_MODELVIEW);			// Go to 3D mode.
 	glLoadIdentity();					// Reset 3D view matrix.
-
 
 
 }
@@ -135,6 +153,7 @@ int main(int argc, char* argv[])
 	glutReshapeFunc(reshape);										// Reshape CALLBACK function.
 	glutDisplayFunc(display);										// Display CALLBACK function.
 	glutIdleFunc(idle);												// Idle CALLBACK function.
+	glutKeyboardFunc(movePlayer);
 	glutMainLoop();													// Begin graphics program.
 	return 0;														// ANSI C requires a return value.
 }
@@ -157,4 +176,61 @@ void axes() {
 
 	}
 	glEnd();
+}
+
+void drawPoints() {
+	glPointSize(15.0f);
+	glBegin(GL_POINTS);
+	glVertex3f(10.0f, 0.0f, 5.0f);
+	glVertex3f(8.5f, 0.0f, 3.0f);
+	glVertex3f(6.5f, 0.0f, 1.0f);
+	glVertex3f(4.0f, 0.0f, -1.0f);
+	glVertex3f(2.6f, 0.0f, -2.4f);
+	glVertex3f(1.3f, 0.0f, -3.4f);
+	glVertex3f(-0.5f, 0.0f, -4.5f);
+	glVertex3f(-2.9f, 0.0f, -5.3f);
+	glVertex3f(-3.2f, 0.0f, -6.0f);
+	glVertex3f(-4.9f, 0.0f, -7.0f);
+
+	glVertex3f(-5.7f, 0.0f, 1.3f);
+	glVertex3f(-6.0f, 0.0f, 0.2f);
+	glVertex3f(-6.0f, 0.0f, -1.0f);
+	glVertex3f(-6.4f, 0.0f, -1.7f);
+	glVertex3f(-6.0f, 0.0f, -2.6f);
+	glVertex3f(-5.8f, 0.0f, -3.3f);
+	glVertex3f(-5.8f, 0.0f, -4.0f);
+	glVertex3f(-5.6f, 0.0f, -4.8f);
+	glVertex3f(-5.0f, 0.0f, -5.3f);
+	glVertex3f(-4.8f, 0.0f, -6.0f);
+
+	glVertex3f(-10.5f, 0.0f, -0.3f);
+	glVertex3f(-9.0f, 0.0f, -2.6f);
+	glVertex3f(-8.6f, 0.0f, -3.0f);
+	glVertex3f(-8.3f, 0.0f, -3.4f);
+	glVertex3f(-8.0f, 0.0f, -3.8f);
+	glVertex3f(-7.6f, 0.0f, -4.1f);
+	glVertex3f(-7.3f, 0.0f, -4.5f);
+	glVertex3f(-7.0f, 0.0f, -4.8f);
+	glVertex3f(-6.4f, 0.0f, -5.3f);
+	glVertex3f(-6.0f, 0.0f, -6.0f);
+	glEnd();
+	
+
+		//glVertex3f(-11.0f, 0.0f, 3.0f);
+		//glVertex3f(-12.0f, 0.0f, 2.0f);
+		//glVertex3f(-12.7f, 0.0f, 1.4f);
+
+		glPointSize(15.0f);
+		glBegin(GL_POINTS);
+		glVertex3f(-3.2f, 0.0f, -2.0f);
+		glVertex3f(-3.4f, 0.0f, -2.8f);
+		glVertex3f(-3.6f, 0.0f, -3.5f);
+		glVertex3f(-3.8f, 0.0f, -4.0f);
+		glVertex3f(-4.0f, 0.0f, -4.5f);
+		glVertex3f(-4.2f, 0.0f, -5.0f);
+		glVertex3f(-4.4f, 0.0f, -5.5f);
+		glVertex3f(-4.6f, 0.0f, -6.0f);
+		glVertex3f(-4.8f, 0.0f, -6.5f);
+		glVertex3f(-5.0f, 0.0f, -7.0f);
+		glEnd();
 }

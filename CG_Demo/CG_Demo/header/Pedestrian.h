@@ -37,7 +37,6 @@ public:
 	Pedestrian(Point* p, Point*_begin, Point*_finish, float _numPoints);
 	Pedestrian(Point p, Bezier** beziers, int bezierActual);
 	~Pedestrian();
-	void setColor();
 	GLfloat *ka0;
 	GLfloat *kd0;
 	GLfloat *ks0;
@@ -56,14 +55,18 @@ public:
 
 	float t, dt;
 	float dir;
+	float dirArm;
 	float x, y, z, a;
 	float leftArmPos, rArmPos;
+	float* dims;
+	float* center;
 
-	bool stop;
+	bool choco;
 
 	Point** points;
 
 	void collide(Pedestrian *p);
+	//void collide(SuperPersona *p);
 	void draw();
 	void setBezier(Bezier* _bezier);
 	void update();
