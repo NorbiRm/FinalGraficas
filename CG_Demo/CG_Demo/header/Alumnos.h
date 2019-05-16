@@ -4,7 +4,7 @@
 #include "Bezier.h"
 #include <stdio.h>
 
-#define ALUMNOS 100
+#define ALUMNOS 5
 
 class Alumnos
 {

@@ -118,7 +118,7 @@ void init() // FOR GLUT LOOP
 	GLfloat diffusel0[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	GLfloat ambientl0[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	GLfloat specularl0[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	GLfloat position[4] = { 0.0f, -10.0f, 1.0f, 0.0f };
+	GLfloat position[4] = { 0.0f, -40.0f, 1.0f, 0.0f };
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientl0);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffusel0);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, specularl0);

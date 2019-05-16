@@ -25,7 +25,7 @@ Plane::Plane()
 
 	Ip = new float[4];
 	Ip[0] = 1.0f;
-	Ip[1] = -10.0f;
+	Ip[1] = 1.0f;
 	Ip[2] = 1.0f;
 	Ip[3] = 1.0f;
 
@@ -41,7 +41,7 @@ Plane::Plane()
 	pos[1] = 0.0f;
 	pos[2] = 0.0f;
 
-	sintel = glmReadOBJ("assets/images/Tec.obj");
+	sintel = glmReadOBJ("assets/ojala/tectr.obj");
 	glmUnitize(sintel);
 	glmFacetNormals(sintel);
 	glmDimensions(sintel, dims);
